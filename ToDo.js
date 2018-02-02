@@ -1,16 +1,26 @@
 import React, { Component } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
+import {
+    View,
+    Text,
+    TouchableOpacity,
+    StyleSheet,
+    Dimensions,
+    TextInput
+} from "react-native";
+import { Feather } from "@expo/vector-icons";
 
 const { width, height } = Dimensions.get("window");
 
 class ToDo extends Component {
     state = {
         isEditing: false,
-        isCompleted: false
+        isCompleted: false,
+        toDoValue: ""
     };
 
     render() {
-        const { isEditing, isCompleted } = this.state;
+        const { isEditing, isCompleted, toDoValue } = this.state;
+        const { text } = this.props;
         return (
             <View style={styles.container}>
                 <View style={styles.column}>
@@ -21,26 +31,54 @@ class ToDo extends Component {
                                 isCompleted ? styles.completedCircle : styles.uncompletedCircle
                             ]} />
                     </TouchableOpacity>
-                    <Text style={[styles.text, isCompleted ? styles.completedText : styles.uncompletedText]}>Hello, I'm a To Do</Text>
+                    {isEditing ? (
+                        <TextInput
+                            style={[
+                                styles.input,
+                                styles.text,
+                                isCompleted ? styles.completedText : styles.uncompletedText
+                            ]}
+                            value={toDoValue}
+                            multiline={true}
+                            onChangeText={this._controlInput}
+                            returnKeyType={"done"}
+                            onBlur={this._finishEditing}
+                        />
+                    ) : (
+                        <Text
+                            style={[
+                                styles.text,
+                                isCompleted ? styles.completedText : styles.uncompletedText
+                            ]}
+                        >
+                            {text}
+                        </Text>
+                    )}
                 </View>
                 {isEditing ? (
                     <View style={styles.action}>
                         <TouchableOpacity onPressOut={this._finishEditing}>
                             <View style={styles.actionContainer}>
-                                <Text style={styles.actionText}>Check</Text>
+                                <Text style={styles.actionText}>
+                                    <Feather name="check" size={18} color="#353839" />
+                                </Text>
                             </View>
                         </TouchableOpacity>
                     </View>
                 ) : (
-                    <View style={styles.action}>
+                    <View style={styles.actions}>
                         <TouchableOpacity onPressOut={this._startEditing}>
                             <View style={styles.actionContainer}>
-                                <Text style={styles.actionText}>Edit</Text>
+                                <Text style={styles.actionText}>
+                                    <Feather name="edit-2" size={18} color="#353839" />
+                                </Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity>
                             <View style={styles.actionContainer}>
-                                <Text style={styles.actionText}>Delete</Text>
+                                <Text style={styles.actionText}>
+                                    <Feather name="delete" size={18} color="#353839" />
+                                </Text>
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -58,8 +96,10 @@ class ToDo extends Component {
     }
 
     _startEditing = () => {
+        const { text } = this.props;
         this.setState({
-            isEditing: true
+            isEditing: true,
+            toDoValue: text
         });
     }
 
@@ -67,6 +107,12 @@ class ToDo extends Component {
         this.setState({
             isEditing: false
         });
+    }
+
+    _controlInput = text => {
+        this.setState({
+            toDoValue: text
+        })
     }
 }
 
@@ -94,12 +140,12 @@ const styles = StyleSheet.create({
     },
     text: {
         fontWeight: "600",
-        fontSize: 25,
+        fontSize: 23,
         marginVertical: 20
     },
     completedText: {
         color: "#bbb",
-        textDecoration: "line-through"
+        textDecorationLine: "line-through"
     },
     uncompletedText: {
         color: "#353839"
@@ -116,6 +162,10 @@ const styles = StyleSheet.create({
     actionContainer: {
         marginVertical: 10,
         marginHorizontal: 10
+    },
+    input: {
+        marginVertical: 20,
+        width: width / 2
     }
 });
 
