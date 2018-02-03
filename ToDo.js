@@ -7,20 +7,33 @@ import {
     Dimensions,
     TextInput
 } from "react-native";
+import PropTypes from "prop-types";
 import { Feather } from "@expo/vector-icons";
 
 const { width, height } = Dimensions.get("window");
 
 class ToDo extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = { isEditing: false, toDoValue: props.text };
+    }
+
+    static propTypes = {
+        id: PropTypes.string.isRequired,
+        text: PropTypes.string.isRequired,
+        isCompleted: PropTypes.bool.isRequired,
+        deleteToDo: PropTypes.func.isRequired
+    };
+
     state = {
         isEditing: false,
-        isCompleted: false,
         toDoValue: ""
     };
 
     render() {
         const { isEditing, isCompleted, toDoValue } = this.state;
-        const { text } = this.props;
+        const { id, text, deleteToDo } = this.props;
         return (
             <View style={styles.container}>
                 <View style={styles.column}>
@@ -74,7 +87,7 @@ class ToDo extends Component {
                                 </Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPressOut={() => deleteToDo(id)}>
                             <View style={styles.actionContainer}>
                                 <Text style={styles.actionText}>
                                     <Feather name="delete" size={18} color="#353839" />
@@ -96,10 +109,8 @@ class ToDo extends Component {
     }
 
     _startEditing = () => {
-        const { text } = this.props;
         this.setState({
-            isEditing: true,
-            toDoValue: text
+            isEditing: true
         });
     }
 
@@ -154,7 +165,6 @@ const styles = StyleSheet.create({
         width: width / 2,
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-between"
     },
     actions: {
         flexDirection: "row"
