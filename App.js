@@ -47,7 +47,7 @@ export default class App extends React.Component {
                     onSubmitEditing={this._addToDo}
                 />
                 <ScrollView contentContainerStyle={styles.toDos}>
-                    {Object.values(toDos).map(toDo => (
+                    {Object.values(toDos).reverse().map(toDo => (
                         <ToDo
                             key={toDo.id}
                             completeToDo={this._completeToDo}
@@ -67,10 +67,17 @@ export default class App extends React.Component {
         });
     }
 
-    _loadToDos = () => {
-        this.setState({
-            loadedToDos: true
-        });
+    _loadToDos = async () => {
+        try {
+            const toDos = await AsyncStorage.getItem("toDos");
+            const parsedToDos = JSON.parse(toDos);
+            this.setState({
+                loadedToDos: true,
+                toDos: parsedToDos
+            });
+        } catch(err) {
+            console.log(err);
+        }
     }
 
     _addToDo = () => {
@@ -110,7 +117,7 @@ export default class App extends React.Component {
             };
             this._saveToDos(newState.toDos);
             return { ...newState };
-        })
+        });
     }
 
     _uncompleteToDo = id => {
