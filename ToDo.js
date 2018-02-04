@@ -89,7 +89,9 @@ class ToDo extends Component {
                                 </Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity onPressOut={() => deleteToDo(id)}>
+                        <TouchableOpacity onPressOut={(event) => {
+                            event.stopPropagation(); deleteToDo(id)}
+                        }>
                             <View style={styles.actionContainer}>
                                 <Text style={styles.actionText}>
                                     <Feather name="delete" size={18} color="#353839" />
@@ -102,7 +104,8 @@ class ToDo extends Component {
         );
     }
 
-    _toggleComplete = () => {
+    _toggleComplete = event => {
+        event.stopPropagation();
         const { isCompleted, completeToDo, uncompletedToDo, id } = this.props;
         if (isCompleted) {
             uncompletedToDo(id);
@@ -111,13 +114,15 @@ class ToDo extends Component {
         }
     }
 
-    _startEditing = () => {
+    _startEditing = event => {
+        event.stopPropagation();
         this.setState({
             isEditing: true
         });
     }
 
-    _finishEditing = () => {
+    _finishEditing = event => {
+        event.stopPropagation();
         this.setState({
             isEditing: false
         });
