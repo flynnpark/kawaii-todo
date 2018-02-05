@@ -1,21 +1,24 @@
 {
-  "expo": {
-    "name": "Kawaii To Do",
-    "description": "Kawaii To Do App made with React Native.",
-    "slug": "kawaii-todo",
-    "privacy": "public",
-    "sdkVersion": "25.0.0",
-    "platforms": ["ios", "android"],
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#f23657"
-    },
-    "ios": {
-      "supportsTablet": true
+    "expo": {
+        "name": "Kawaii To Do",
+        "description": "Kawaii To Do App made with React Native.",
+        "slug": "kawaii-todo",
+        "privacy": "public",
+        "sdkVersion": "25.0.0",
+        "platforms": ["ios", "android"],
+        "version": "1.0.0",
+        "orientation": "portrait",
+        "icon": "./assets/icon.png",
+        "splash": {
+            "image": "./assets/splash.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#fff"
+        },
+        "ios": {
+            "supportsTablet": true
+        },
+        "android": {
+            "package": "xyz.flynndev.kawaii"
+        }
     }
-  }
 }
