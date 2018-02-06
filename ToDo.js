@@ -25,7 +25,8 @@ class ToDo extends Component {
         isCompleted: PropTypes.bool.isRequired,
         completeToDo: PropTypes.func.isRequired,
         uncompletedToDo: PropTypes.func.isRequired,
-        deleteToDo: PropTypes.func.isRequired
+        updateToDo: PropTypes.func.isRequired,
+        deleteToDo: PropTypes.func.isRequired,
     };
 
     state = {
@@ -124,6 +125,9 @@ class ToDo extends Component {
 
     _finishEditing = event => {
         event.stopPropagation();
+        const { toDoValue } = this.state;
+        const { id, updateToDo } = this.props;
+        updateToDo(id, toDoValue);
         this.setState({
             isEditing: false
         });
